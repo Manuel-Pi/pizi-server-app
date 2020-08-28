@@ -1,0 +1,47 @@
+nav{
+    background-color: #222;
+    position: absolute;
+    top: @header-height;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1200;
+    margin: 0;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; 
+
+    .menu-container{
+        max-width: 600px;
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+
+        a{
+            width: 40%;
+            min-width: 140px;
+            margin: 40px 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            text-decoration: none;
+            color: peru;
+    
+            .svg-inline--fa{
+                font-size: 60px;
+            }
+
+            label{
+                font-size: 24px;
+                width: 100%;
+                text-align: center;
+                margin-top: 8px;
+            }
+        }
+    }
+}

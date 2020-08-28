@@ -1,0 +1,92 @@
+.home{
+    width: 100%;
+    display: block;
+    padding: 8px;
+    min-height: 100%;
+
+    .disabled{
+        color: LightSalmon;
+    }
+
+    .enabled, .connected{
+        color: LimeGreen;
+    }
+
+    .info{
+        margin-bottom: 8px;
+
+        label{
+            color: peru;
+            margin-right: 4px;
+        }
+
+        .rest-url{
+            letter-spacing: 1.4px;
+        }
+    }
+
+    .list-info{
+        label{
+            color: #888;
+            margin-right: 4px;
+            margin-left: 8px;
+            font-size: 0.8em;
+        }
+
+        span{
+            font-size: 0.8em;
+        };
+    }
+
+    h1{
+        color: peru;
+    }
+
+    h3{
+        color: #888;
+        border-bottom: 1px solid #666;
+        padding-bottom: 4px;
+    }
+
+    .apps{
+
+        .apps-list{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app{
+            width: 50%;
+            padding: 16px 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #AAA;
+            text-decoration: none;
+
+            &:hover{
+                background-color: #333;
+            }
+
+            label{
+                display: block;
+                width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-size: 20px;
+                text-align: center;
+                padding-top: 8px;
+            }
+
+            img{
+                width: 80px;
+                height: auto;
+            }
+        }
+    }
+}

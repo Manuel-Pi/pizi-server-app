@@ -1,0 +1,22 @@
+header{
+    display: block;
+    background-color: peru;
+    position: relative;
+    height: @header-height;
+    width: 100%;
+    padding: 2px;
+    z-index: 1000;
+
+    .menu-button{
+        position: absolute;
+        right: 4px;
+        top: 0;
+        font-size: @header-height;
+        line-height: @header-height;
+        color: #222;
+        float: right;
+        cursor: pointer;
+    }
+}
+
+@import "./menu";

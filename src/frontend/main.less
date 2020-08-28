@@ -1,0 +1,70 @@
+@charset "UTF-8";
+/* Normalize */
+@import "../../node_modules/normalize.css/normalize.css";
+@import "../../node_modules/animate.css/animate.css";
+
+@color-black: #222;
+@color-black-light: #444;
+@color-main: peru;
+@color-main-light: #e7944b;
+@color-main-medium-dark: #B25E18;
+@color-main-dark: #301C14;
+@color-white: #DDDD;
+@color-hover: @color-black-light;
+
+@border: 4px solid @color-black;
+@border-light: 1px solid @color-black-light;
+@border-radius: 14px;
+
+@font-family: Arial, Helvetica, sans-serif;
+
+@letter-spacing: 1.8px;
+
+@breakpoint-xs: 500px;
+@breakpoint-sm: 400px;
+
+@app-max-width: 800px;
+
+@header-height: 40px;
+@footer-height: 30px;
+
+html, body, app{
+    height: 100vh;
+    width: 100vw;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #222;
+    color: @color-white;
+    font-family: @font-family;
+}
+
+.hidden{
+    display: none;
+}
+
+header{
+    display: flex;
+    width: 100%;
+    height: 80px;
+    background-color: peru;
+}
+
+a{
+    color: LightSkyBlue;
+    letter-spacing: 1px;
+
+    &:hover{
+        color: LightBlue;
+    }
+}
+
+
+@import "./app";
+@import "./components/Header/header";
+@import "./components/Footer/footer";
+@import "./screens/Home/home";
