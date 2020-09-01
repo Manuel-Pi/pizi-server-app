@@ -1,7 +1,7 @@
 import React, { useState, useEffect, CSSProperties } from 'react';
 
 type Screen1Props = {
-    className: string
+    className?: string
 }
  
 export const Screen3 = ({className}:Screen1Props) => {

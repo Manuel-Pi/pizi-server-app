@@ -24,6 +24,7 @@ import { faCheck,
         faSignOutAlt,
         faSignInAlt,
         faMinus,
+        faHome,
         faPuzzlePiece,
         faList,
         faUsers,
@@ -37,7 +38,13 @@ import { faCheck,
         faPowerOff,
         faRedo,
         faFlagCheckered,
-        faBan} from '@fortawesome/free-solid-svg-icons';
+        faShieldAlt,
+        faBan,
+        faDatabase,
+        faPlug,
+        faBinoculars,
+        faUser,
+        faServer} from '@fortawesome/free-solid-svg-icons';
 import { App } from "./App";
 // Add custom icon to Font Awesome
 library.add(faCheck, 
@@ -56,6 +63,7 @@ library.add(faCheck,
             faKissWinkHeart, 
             faReceipt,
             faHandPaper,
+            faHome,
             faFileSignature,
             faBullhorn,
             faPlus,
@@ -75,7 +83,13 @@ library.add(faCheck,
             faPowerOff,
             faRedo,
             faFlagCheckered,
-            faBan);
+            faShieldAlt,
+            faDatabase,
+            faPlug,
+            faBinoculars,
+            faBan,
+            faUser,
+            faServer);
 // Used for webpack to load less
 !!React;
 // Init Socket,io

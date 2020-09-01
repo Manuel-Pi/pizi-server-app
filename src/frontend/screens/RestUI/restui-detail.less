@@ -1,0 +1,66 @@
+.rest-ui-detail{
+    width: 100%;
+    padding: 8px 0 16px 0;
+    overflow: auto;
+
+    table{
+        font-size: 14px;
+        border-collapse: collapse;
+
+        thead{
+            th{
+                padding: 4px;
+                text-align: left;
+                color: peru;
+            }
+        }
+        tbody{
+            td{
+                padding: 4px;
+                vertical-align: top;
+            }
+            tr:nth-child(even){
+                background-color: #333;
+            }
+        }
+    }
+}
+
+.json-object{
+    font-size: 14px;
+    border-left: 1px solid #333;
+
+    .json-object-value{
+        color: #BBB;
+        padding-left: 10px;
+    }
+    .json-object-key{
+        color: #666;
+        padding-right: 8px;
+
+        & + .json-object > .delimiter{
+            display: none;
+        }
+    }
+
+    & + .json-object{
+        margin-top: 8px;
+    }
+}
+
+.json-array{
+    > .json-object{
+        &:nth-child(even){
+            background-color: #333;
+            border-left: 1px solid #444;
+
+            .json-object-key{
+                color: #777;
+            }
+        }
+    }
+}
+
+.json-array .json-object, .json-object .json-object{
+    padding-left: 10px;
+}

@@ -17,6 +17,44 @@ header{
         float: right;
         cursor: pointer;
     }
+
+    svg{
+        font-size: 26px !important;
+        color: #222;
+        position: absolute;
+        top: 2px;
+    }
+
+    .fa-sign-in-alt{
+        right: 8px;
+    }
+
+    .fa-user{
+        font-size: 22px !important;
+    }
+
+    .fa-server{
+        left: 8px;
+    }
+
+    .fa-server, .fa-sign-in-alt{
+        opacity: 0.6;
+
+        &:hover{
+            opacity: 0.9;
+        }
+    }
+
+    .username{
+        position: absolute;
+        left: 50px;
+        color: #222;
+
+        > div {
+            margin-left: 24px;
+            font-size: 12px;
+        }
+    }
 }
 
 @import "./menu";

@@ -5,9 +5,10 @@ import { Link } from 'react-router-dom';
 
 type HeaderProps = {
     className?: string
+    username?: string
 }
  
-export const Header = ({className}:HeaderProps) => {
+export const Header = ({className, username = "anonymous"}:HeaderProps) => {
     const[menuOpen, setMenuOpen] = useState(false);
     const headerClassName  = CreateClassName({
         "header": true
@@ -18,13 +19,25 @@ export const Header = ({className}:HeaderProps) => {
     }, className);
     return  <>
                 <header className={headerClassName}>
-                    <FontAwesomeIcon icon="bars" className="menu-button" onClick={() => setMenuOpen(!menuOpen)}/>
+                    <Link to="/"><FontAwesomeIcon icon="server"/></Link>
+                    <span className="username">
+                        <FontAwesomeIcon icon="user"/>
+                        <div>
+                            <div>{"not logged"}</div>
+                            <div>{username}</div>
+                        </div>
+                    </span>
+                    <Link to="/login"><FontAwesomeIcon icon="sign-in-alt"/></Link>
                 </header>
                 <nav className={headerMenuClassName}>
                     <div className="menu-container">
+                        <Link to="/login" onClick={() => setMenuOpen(false)}>
+                            <FontAwesomeIcon icon="sign-in-alt"/>
+                            <label>Login</label>
+                        </Link>
                         <Link to="/" onClick={() => setMenuOpen(false)}>
-                            <FontAwesomeIcon icon="compass"/>
-                            <label>Screen 1</label>
+                            <FontAwesomeIcon icon="home"/>
+                            <label>Home</label>
                         </Link>
                         <Link to="/screen2" onClick={() => setMenuOpen(false)}>
                             <FontAwesomeIcon icon="compass"/>
