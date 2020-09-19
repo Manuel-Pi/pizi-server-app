@@ -1,20 +1,23 @@
 import React, { useState, useEffect, CSSProperties } from 'react';
 import { useParams } from 'react-router-dom';
+import { Token } from '../../utils/Token';
 
 type RestUIDetailProps = {
     className?: string
+    token?: any
 }
 
 let oldCollectionId: string;
  
-export const RestUIDetail = ({className}:RestUIDetailProps) => {
+export const RestUIDetail = ({className, token = {}}:RestUIDetailProps) => {
     const[json, setJson] = useState([]);
     let { collectionId } = useParams();
 
     const getJson = () => {
+        
         fetch("/pizi-rest/" + collectionId, {
             headers:{
-                Authorization: "Bearer " + localStorage.getItem("token")
+                Authorization: Token.getHeader()
             }
         }).then(response => response.json())
         .then(json => setJson(json));
@@ -46,6 +49,8 @@ export const RestUIDetail = ({className}:RestUIDetailProps) => {
     if(collectionId && collectionId !== oldCollectionId) getJson();
 
     return  <div className={"rest-ui-detail " + className}>
+                <h3>Details</h3>
+                <h4>collection: <span>{collectionId}</span></h4>
                 {renderObject(json)}
             </div>
 }

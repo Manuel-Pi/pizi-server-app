@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 
 type HeaderProps = {
     className?: string
-    username?: string
+    token?: any
 }
  
-export const Header = ({className, username = "anonymous"}:HeaderProps) => {
+export const Header = ({className, token = {}}:HeaderProps) => {
     const[menuOpen, setMenuOpen] = useState(false);
     const headerClassName  = CreateClassName({
         "header": true
@@ -23,11 +23,11 @@ export const Header = ({className, username = "anonymous"}:HeaderProps) => {
                     <span className="username">
                         <FontAwesomeIcon icon="user"/>
                         <div>
-                            <div>{"not logged"}</div>
-                            <div>{username}</div>
+                            <div>{token.user || "not logged"}</div>
+                            <div>{token.role || "anonymous"}</div>
                         </div>
                     </span>
-                    <Link to="/login"><FontAwesomeIcon icon="sign-in-alt"/></Link>
+                    <Link to="/login"><FontAwesomeIcon icon={token.jwt ? "sign-out-alt" : "sign-in-alt"}/></Link>
                 </header>
                 <nav className={headerMenuClassName}>
                     <div className="menu-container">

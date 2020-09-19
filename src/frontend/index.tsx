@@ -3,69 +3,42 @@ import "./main.less";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCheck, 
-        faGraduationCap, 
-        faCannabis, 
-        faCompass,
-        faChessQueen, 
-        faChessKing, 
-        faCarrot, faBars, 
-        faPaperPlane, 
-        faSpinner, 
-        faTrophy, 
-        faStar, 
-        faTimes, 
-        faKissWinkHeart, 
-        faReceipt,
-        faHandPaper,
-        faFileSignature,
-        faBullhorn,
-        faPlus,
-        faSignOutAlt,
-        faSignInAlt,
-        faMinus,
-        faHome,
-        faPuzzlePiece,
-        faList,
-        faUsers,
-        faChartBar,
-        faUserCog,
-        faToggleOff,
-        faToggleOn,
-        faAngleRight,
-        faAngleLeft,
-        faInfo,
-        faPowerOff,
-        faRedo,
-        faFlagCheckered,
-        faShieldAlt,
-        faBan,
-        faDatabase,
-        faPlug,
-        faBinoculars,
-        faUser,
-        faServer} from '@fortawesome/free-solid-svg-icons';
+import { faAdn } from "@fortawesome/free-brands-svg-icons/faAdn";
+import { faBinoculars } from '@fortawesome/free-solid-svg-icons/faBinoculars';
+import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
+import { faBars } from '@fortawesome/free-solid-svg-icons/faBars';
+import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
+import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons/faSignOutAlt';
+import { faSignInAlt } from '@fortawesome/free-solid-svg-icons/faSignInAlt';
+import { faMinus } from '@fortawesome/free-solid-svg-icons/faMinus';
+import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
+import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons/faPuzzlePiece';
+import { faList } from '@fortawesome/free-solid-svg-icons/faList';
+import { faUsers } from '@fortawesome/free-solid-svg-icons/faUsers';
+import { faChartBar } from '@fortawesome/free-solid-svg-icons/faChartBar';
+import { faUserCog } from '@fortawesome/free-solid-svg-icons/faUserCog';
+import { faToggleOff } from '@fortawesome/free-solid-svg-icons/faToggleOff';
+import { faToggleOn } from '@fortawesome/free-solid-svg-icons/faToggleOn';
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons/faAngleLeft';
+import { faInfo } from '@fortawesome/free-solid-svg-icons/faInfo';
+import { faPowerOff } from '@fortawesome/free-solid-svg-icons/faPowerOff';
+import { faRedo } from '@fortawesome/free-solid-svg-icons/faRedo';
+import { faFlagCheckered } from '@fortawesome/free-solid-svg-icons/faFlagCheckered';
+import { faBan } from '@fortawesome/free-solid-svg-icons/faBan';
+import { faDatabase } from '@fortawesome/free-solid-svg-icons/faDatabase';
+import { faPlug } from '@fortawesome/free-solid-svg-icons/faPlug';
+import { faShieldAlt } from '@fortawesome/free-solid-svg-icons/faShieldAlt';
+import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
+import { faServer } from '@fortawesome/free-solid-svg-icons/faServer';
+
 import { App } from "./App";
 // Add custom icon to Font Awesome
 library.add(faCheck, 
-            faGraduationCap, 
-            faCannabis, 
-            faCompass,
-            faChessQueen, 
-            faChessKing, 
-            faCarrot, 
             faBars, 
-            faPaperPlane, 
-            faSpinner, 
-            faTrophy, 
-            faStar, 
             faTimes, 
-            faKissWinkHeart, 
-            faReceipt,
-            faHandPaper,
             faHome,
-            faFileSignature,
-            faBullhorn,
             faPlus,
             faSignOutAlt,
             faSignInAlt,
@@ -89,7 +62,8 @@ library.add(faCheck,
             faBinoculars,
             faBan,
             faUser,
-            faServer);
+            faServer,
+            faAdn);
 // Used for webpack to load less
 !!React;
 // Init Socket,io

@@ -64,6 +64,7 @@ module.exports = {
             patterns: [
                 "src/frontend/index.html",
                 "src/frontend/icon.png",
+                "src/frontend/app-no-logo.png",
                 {
                     from: "src/backend",
                     to: "server"

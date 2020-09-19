@@ -1,37 +1,60 @@
 import React, { useState, useEffect, CSSProperties } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
 
 type HomeProps = {
     className?: string,
     infos: any,
+    token: any 
 }
 
-
-
  
-export const Home = ({className, infos}:HomeProps) => {
-    const[users, setUsers] = useState([]);
+export const Home = ({className, infos, token}:HomeProps) => {
     const[displayDetail, setDisplayDetail] = useState("");
+    const[currentTime, setCurrentTime] = useState(new Date());
 
-    useEffect(() => {
-        fetch("https://localhost:8087/pizi-rest/users", {
-            headers:{
-                Authorization: "Bearer " + localStorage.getItem("token")
-            }
-        }).then(response => response.json())
-        .then(json =>setUsers(json));
-    }, []);
+    const tokenDecoded:any = token.jwt ? jwtDecode(token.jwt) : {};
+    const tokenHeaderDecoded:any = token.jwt ? jwtDecode(token.jwt, { header: true }) : {};
+    const tokenExpireDate = token.jwt ? (new Date()).setUTCSeconds(tokenDecoded.exp) : null;
+    const tokenIssueDate = token.jwt ? (new Date()).setUTCSeconds(tokenDecoded.iat) : null;
 
+    const formatDate = (dateString: number) => {
+        let date = new Date(0);
+        date.setUTCSeconds(dateString);
+        return date.toLocaleString();
+    };
+
+    useEffect(()=>{
+        setInterval( () => {
+            setCurrentTime(new Date());
+        }, 1000);
+    }, [])
+    
     return  <div className={"home " + className}>
                 <h1>Pizi Server</h1>
                 <div className="main-infos">
                     <span>{infos.https ? "https" : "http"}</span>
                     <span>on</span>
                     <span>{infos.port}</span>
+                    <span>
+                        <div>
+                        {
+                            currentTime.toLocaleDateString('en-US', {weekday: 'long'}).toLowerCase() + " " +
+                            currentTime.toLocaleDateString('en-US', {day: 'numeric'}) + " " +
+                            currentTime.toLocaleDateString('en-US', {month: 'long'}).toLowerCase()  + " "  +
+                            currentTime.toLocaleDateString('en-US', {year: 'numeric'}) 
+                        }
+                        </div>
+                        <div>
+                        {
+                            currentTime.toLocaleTimeString()
+                        }
+                        </div>
+                     </span>
                 </div>
                 <div className={"infos"}>
-                    <h3>Informations</h3>
+                    <h3>Modules</h3>
                     <div className={"items " + ( displayDetail ? "display-details" : "")}>
                         <div className={"info " + ( displayDetail === "jwt" ? "active" : "")} onClick={ e => setDisplayDetail(displayDetail === "jwt" ? "" : "jwt")}>
                             <div className="badge">
@@ -40,6 +63,7 @@ export const Home = ({className, infos}:HomeProps) => {
                                 {infos.jwt ? <span className="enabled">enabled</span>: <span className="disabled">disabled</span>}
                             </div>
                             <ul className="detail">
+                                <h4>informations</h4>
                                 <li>
                                     <label>need token:</label>
                                     {infos.jwt ? <span className="enabled">enabled</span>: <span className="disabled">disabled</span>}
@@ -52,6 +76,21 @@ export const Home = ({className, infos}:HomeProps) => {
                                     <label>expire:</label>
                                     <span>{infos.tokenExpire}</span>
                                 </li>
+                                <h4>current token</h4>
+                                <h5>header</h5>
+                                {
+                                    Object.keys(tokenHeaderDecoded).map(key => <li>
+                                                                            <label>{key}:</label>
+                                                                            <span>{tokenHeaderDecoded[key]}</span>
+                                                                        </li>)
+                                }
+                                <h5>payload</h5>
+                                {
+                                    Object.keys(tokenDecoded).map(key => <li>
+                                                                            <label>{key}:</label>
+                                                                            <span>{(key === "exp" || key === "iat") ? formatDate(tokenDecoded[key]) : tokenDecoded[key]}</span>
+                                                                        </li>)
+                                }
                             </ul>
                         </div>
                         <div className={"info " + ( displayDetail === "db" ? "active" : "")} onClick={ e => setDisplayDetail(displayDetail === "db" ? "" : "db")}>
@@ -61,13 +100,22 @@ export const Home = ({className, infos}:HomeProps) => {
                                 <span className={infos.db}>{infos.db}</span>
                             </div>
                             <ul className="detail">
+                                <h4>informations</h4>
                                 <li>
                                     <label>type:</label>
                                     <span>mongoDB</span>
                                 </li>
                                 <li>
+                                    <label>url:</label>
+                                    <span>{infos.dbUrl}</span>
+                                </li>
+                                <li>
                                     <label>status:</label>
                                     <span className={infos.db}>{infos.db}</span>
+                                </li>
+                                <li>
+                                    <label>version:</label>
+                                    <span>{infos.dbVersion}</span>
                                 </li>
                             </ul>
                         </div>
@@ -80,12 +128,13 @@ export const Home = ({className, infos}:HomeProps) => {
                                 </span>
                             </div>
                             <ul className="detail">
+                                <h4>informations</h4>
                                 <li>
-                                    <label>url:</label>
+                                    <label>endpoint:</label>
                                     <span><a className="rest-url" href={infos.rest.url} target="_blank">{infos.rest.url}</a></span>
                                 </li>
                                 <li>
-                                    <label>ui:</label>
+                                    <label>rest ui:</label>
                                     <span><Link to="/pizi-rest-ui">/pizi-rest-ui</Link></span>
                                 </li>
                             </ul>
@@ -97,7 +146,14 @@ export const Home = ({className, infos}:HomeProps) => {
                                 <span>{infos.logger.server}</span>
                             </div>
                             <ul className="detail">
-                                {Object.keys(infos.logger).map((logger:string) => <li>
+                                <h4>server</h4>
+                                {Object.keys(infos.logger).filter(key => key === "server").map((logger:string) => <li>
+                                                    <label>{"level:"}</label>
+                                                    <span>{infos.logger[logger]}</span>
+                                                </li>
+                                )}
+                                <h4>apps</h4>
+                                {Object.keys(infos.logger).filter(key => key !== "server").map((logger:string) => <li>
                                                     <label>{logger + ":"}</label>
                                                     <span>{infos.logger[logger]}</span>
                                                 </li>
@@ -110,7 +166,7 @@ export const Home = ({className, infos}:HomeProps) => {
                     <h3>Applications</h3>
                     <div className="apps-list">
                         {infos.apps.map((app:any) => <a className="app" target="_blank" href={"/" + app.name}>
-                                            <img src={"/" + app.name + "/icon.png"}/>
+                                            <img src={"/" + app.name + "/icon.png"} onError={e => e.currentTarget.src = "/app-no-logo.png"}/>
                                             <label>{app.name}</label>
                                         </a>
                         )}

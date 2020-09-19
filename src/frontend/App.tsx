@@ -13,6 +13,7 @@ import { Screen3 } from './screens/Screen3';
 import { Footer } from './components/Footer/Footer';
 import { RestUI } from './screens/RestUI/RestUI';
 import { RestUIDetail } from './screens/RestUI/RestUIDetail';
+import { Token } from './utils/Token';
 
 type AppProps = {
     socket: any
@@ -20,7 +21,7 @@ type AppProps = {
 
 type AppState = {
     infos: any,
-    token: string
+    token: any
 }
 
 export class App extends Component<AppProps, AppState> {
@@ -28,7 +29,7 @@ export class App extends Component<AppProps, AppState> {
     constructor(props: AppProps){
         super(props);
         this.state = {
-            token: null,
+            token: {},
             infos: {
                 apps: [],
                 logger: {},
@@ -49,15 +50,16 @@ export class App extends Component<AppProps, AppState> {
         });
 
         this.props.socket.on("infos", (infos :any) => this.setState({infos}));
+        Token.getToken().then(token => token && this.setState({token}));
     }
 
     render(){
         return <Router>
-                <Header/>
+                <Header token={this.state.token}/>
                 <main>
                     <Switch>
                         <Route path="/login">
-                            <Login onLogged={token => this.setState({token})}/>
+                            <Login onLogged={token => this.setState({token})} token={this.state.token}/>
                         </Route>
                         <Route path="/screen2">
                             <Screen2/>
@@ -69,7 +71,7 @@ export class App extends Component<AppProps, AppState> {
                             <RestUI/>
                         </Route>
                         <Route path="/">
-                            <Home infos={this.state.infos}/>
+                            <Home infos={this.state.infos} token={this.state.token}/>
                         </Route>
                     </Switch>
                 </main>
