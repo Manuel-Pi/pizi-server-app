@@ -1,5 +1,4 @@
 import React, { useState, useEffect, CSSProperties } from 'react';
-import { useHistory } from "react-router";
 import { Token } from '../../utils/Token';
 import { CreateClassName } from '../../utils/Utils';
 
@@ -12,19 +11,16 @@ type LoginProps = {
 export const Login = ({className, onLogged, token = {}}:LoginProps) => {
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
-    const history = useHistory();
 
     const login = () => {
         if(token.jwt){
             token = {};
             Token.clearToken();
             onLogged && onLogged(token);
-            history.push('/');
         } else {
             Token.getToken(username, password).then(token => {
                 if(!token || !token.jwt) return;
                 onLogged && onLogged(token);
-                history.push('/');
             })
         }
     };

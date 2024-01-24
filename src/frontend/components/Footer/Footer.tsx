@@ -1,4 +1,4 @@
-import React, { useState, useEffect, CSSProperties } from 'react';
+import React from 'react';
 
 type FooterProps = {
     className?: string

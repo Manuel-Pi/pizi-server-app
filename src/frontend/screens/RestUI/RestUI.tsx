@@ -1,5 +1,5 @@
 import React, { useState, useEffect, CSSProperties } from 'react';
-import { Link, Switch, Route, useParams } from 'react-router-dom';
+import { Link, Route, useParams } from 'react-router-dom';
 import { RestUIDetail } from './RestUIDetail';
 
 type RestUIProps = {
@@ -21,10 +21,8 @@ export const RestUI = ({className}:RestUIProps) => {
                         </li>
                     </ul>
                 </div>
-                <Switch>
                     <Route path="/pizi-rest-ui/:collectionId">
                         <RestUIDetail/>
                     </Route>
-                </Switch>
             </div>
 }

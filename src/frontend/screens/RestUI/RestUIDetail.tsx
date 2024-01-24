@@ -7,7 +7,7 @@ type RestUIDetailProps = {
     token?: any
 }
 
-let oldCollectionId: string;
+let oldCollectionId: string | undefined;
  
 export const RestUIDetail = ({className, token = {}}:RestUIDetailProps) => {
     const[json, setJson] = useState([]);

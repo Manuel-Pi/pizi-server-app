@@ -1,4 +1,4 @@
-import React, { useState, useEffect, CSSProperties } from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CreateClassName } from '../../utils/Utils';
 import { Link } from 'react-router-dom';
@@ -23,11 +23,11 @@ export const Header = ({className, token = {}}:HeaderProps) => {
                     <span className="username">
                         <FontAwesomeIcon icon="user"/>
                         <div>
-                            <div>{token.user || "not logged"}</div>
+                            <div>{token.user || "not logged"}</div>
                             <div>{token.role || "anonymous"}</div>
                         </div>
                     </span>
-                    <Link to="/login"><FontAwesomeIcon icon={token.jwt ? "sign-out-alt" : "sign-in-alt"}/></Link>
+                    <Link to="/login" style={{position: "absolute", right: "34px"}}><FontAwesomeIcon icon={token.jwt ? "sign-out-alt" : "sign-in-alt"}/></Link>
                 </header>
                 <nav className={headerMenuClassName}>
                     <div className="menu-container">
