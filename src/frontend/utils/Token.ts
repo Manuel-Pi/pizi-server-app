@@ -1,42 +1,52 @@
-let TOKEN: any = {};
-export const Token = {
-    async getToken(username?: string, password?: string){
-        TOKEN = TOKEN.jwt || JSON.parse(localStorage.getItem("token") || "{}");
-        // Check if token is valid
-        if(TOKEN.jwt){
-            try{
-                const response = await fetch("/pizi-rest/check", {
-                    method: 'POST',
-                    headers: {
-                        Authorization: this.getHeader()
-                    }
-                });
-                TOKEN = await response.json();
-                localStorage.setItem("token", JSON.stringify(TOKEN));
-            } catch(e){
-                this.clearToken();
-                console.log("Token not valid ... destroyed!");
-            }
-        }
-        if(!TOKEN.jwt && username && password){
-            const response = await fetch("/pizi-rest/token", {
-                method: 'POST',
-                headers: {
-                    login: username,
-                    password: password,
-                }
-            });
+import { createContext } from "react"
 
-            TOKEN = await response.json();
-            localStorage.setItem("token", JSON.stringify(TOKEN));
+let TOKEN: {
+    accessToken: string,
+    userId: string
+} | null
+
+const TOKEN_KEY = "token"
+
+async function checkTokenIsValid(){
+    const response = await fetch("/api/oauth/authenticate", { headers: Token.getAuthorizationHeader() })
+    if(response.status !== 200) throw new Error('token not valid')
+}
+
+async function getTokenFromSession(){
+    const response = await fetch("/api/app/token")
+    if(response.status !== 200) throw new Error('cannot get token from session')
+    TOKEN = await response.json()
+    sessionStorage.setItem(TOKEN_KEY, JSON.stringify(TOKEN))
+}
+
+export const Token = {
+    async getToken(){
+        try{
+            // Get token from sessionStorage
+            if(!TOKEN){
+                const tokenFromStorage = sessionStorage.getItem(TOKEN_KEY)
+                if(tokenFromStorage) TOKEN = JSON.parse(tokenFromStorage)
+                try{
+                    if(TOKEN) await checkTokenIsValid()
+                    else throw new Error("token not found")
+                } catch(e){
+                    await getTokenFromSession()
+                }
+            } 
+        } catch(e){
+            await this.clearToken()
+            console.error(`cannot get token: ${e.message}`)
         }
-        return TOKEN;
+        return TOKEN
     },
-    clearToken(){
-        TOKEN = {};
-        localStorage.removeItem("token");
+    async clearToken(){
+        TOKEN = null
+        sessionStorage.removeItem("token")
+        await fetch("/api/app/logout")
     },
-    getHeader(){
-        return "Bearer " + TOKEN.jwt
+    getAuthorizationHeader(){
+        return { Authorization: `Bearer ${TOKEN?.accessToken}` }
     }
 }
+
+export const TokenContext = createContext(null)

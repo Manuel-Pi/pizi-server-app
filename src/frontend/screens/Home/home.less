@@ -1,8 +1,37 @@
 .home{
     width: 100%;
-    display: block;
-    padding: 8px;
-    min-height: 100%;
+
+    h1{
+        position: relative;
+
+        .date{
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 0.4em;
+            color: white;
+            line-height: 1;
+
+            .time{
+                float: right;
+                font-size: 2em;
+                color: peru;
+            }
+        }
+    }
+
+    .public{
+        align-items: center;
+
+        h1, h3{
+            text-align: center;
+        }
+
+        .pizi-button{
+            margin-top: 2em;
+            width: 180px;
+        }
+    }
 
     .disabled{
         color: LightSalmon !important;
@@ -192,15 +221,11 @@
         };
     }
 
-    h1{
-        color: peru;
-        margin-bottom: 0px;
-    }
-
-    h3{
+    h3.test{
         color: #888;
         border-bottom: 1px solid #666;
         padding-bottom: 4px;
+        border-radius: 0;
     }
 
     .apps{

@@ -6,9 +6,10 @@ const CopyWebpackPlugin = require("copy-webpack-plugin")
 
 module.exports = {
     mode: "production",
+    watch: true,
 
     // Enable sourcemaps for debugging webpack's output.
-    //devtool: "source-map",
+    devtool: "source-map",
 
     entry: {
         "server-app": "./src/frontend/index.tsx"
@@ -28,21 +29,25 @@ module.exports = {
         rules: [
             {
                 test: /\.ts(x?)$/,
-                exclude: /node_modules/,
                 use: [
                     {
                         loader: "ts-loader",
+                        options: {
+                            allowTsInNodeModules: true
+                        }
                     }
                 ]
             },
-            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-            {
-                enforce: "pre",
-                test: /\.js$/,
-                loader: "source-map-loader"
-            },
             {
                 test: /\.less$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    "css-loader",
+                    "less-loader"
+                ]
+            },
+            {
+                test: /\.svg$/,
                 use: [
                     MiniCssExtractPlugin.loader,
                     "css-loader",
@@ -57,7 +62,8 @@ module.exports = {
         }),
         new CopyWebpackPlugin({
             patterns: [
-                { from: "./src/frontend/index.html", to: __dirname + '/dist' }
+                { from: "./src/frontend/index.html", to: __dirname + '/dist' },
+                { from: "./src/frontend/icon.png", to: __dirname + '/dist' }
             ]
         })
     ],
@@ -68,6 +74,6 @@ module.exports = {
     },
     externals:{
         "react": "React",
-        "react-dom": "ReactDOM"
+        "react-dom/client": "ReactDOM"
     }
 }

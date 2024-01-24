@@ -1,11 +1,9 @@
-import React from 'react';
+import React from 'react'
 
-type FooterProps = {
-    className?: string
-}
+type FooterProps = {}
  
-export const Footer = ({className}:FooterProps) => {
-    return  <footer className={className}>
-                PiziApp 2020
+export const Footer = (props :FooterProps) => {
+    return  <footer>
+                Pizi Server 2024
             </footer>
 }

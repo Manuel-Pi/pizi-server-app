@@ -1,60 +1,69 @@
-import React, { useState, useEffect, CSSProperties } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
+import React, { useState, useEffect, useContext } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import jwtDecode from 'jwt-decode'
+import { AppScreenProps, Button, Heading, Link } from 'pizi-react'
+import { H } from '../../components/Headings/Heading'
+import { TokenContext } from '../../utils/Token'
 
-type HomeProps = {
-    className?: string,
-    infos: any,
-    token: any 
+type HomeProps = AppScreenProps & {
+    infos?: any
 }
 
- 
-export const Home = ({className, infos, token}:HomeProps) => {
-    const[displayDetail, setDisplayDetail] = useState("");
-    const[currentTime, setCurrentTime] = useState(new Date());
+export const Home = ({infos = { logger: {}, apps: []}}:HomeProps) => {
+    const[displayDetail, setDisplayDetail] = useState("")
+    const[currentTime, setCurrentTime] = useState(new Date())
+    const token = useContext(TokenContext)
 
-    const tokenDecoded:any = token.jwt ? jwtDecode(token.jwt) : {};
-    const tokenHeaderDecoded:any = token.jwt ? jwtDecode(token.jwt, { header: true }) : {};
-    const tokenExpireDate = token.jwt ? (new Date()).setUTCSeconds(tokenDecoded.exp) : null;
-    const tokenIssueDate = token.jwt ? (new Date()).setUTCSeconds(tokenDecoded.iat) : null;
+    const tokenToParse: any = {}
+    const tokenDecoded:any = tokenToParse.jwt ? jwtDecode(tokenToParse.jwt) : {}
+    const tokenHeaderDecoded:any = tokenToParse.jwt ? jwtDecode(tokenToParse.jwt, { header: true }) : {}
+    const tokenExpireDate = tokenToParse.jwt ? (new Date()).setUTCSeconds(tokenDecoded.exp) : null
+    const tokenIssueDate = tokenToParse.jwt ? (new Date()).setUTCSeconds(tokenDecoded.iat) : null
 
     const formatDate = (dateString: number) => {
-        let date = new Date(0);
-        date.setUTCSeconds(dateString);
-        return date.toLocaleString();
-    };
+        const date = new Date(0)
+        date.setUTCSeconds(dateString)
+        return date.toLocaleString()
+    }
 
     useEffect(()=>{
         setInterval( () => {
-            setCurrentTime(new Date());
-        }, 1000);
+            setCurrentTime(new Date())
+        }, 60000)
     }, [])
+
+
+    const publicHome = <>
+        <div className='pizi-container public'>
+            <img src="/icon.png"/>
+            <H tag="h1">Pizi Server</H>
+            <H tag="h3" color="teritary">A simple Node.js server providing oauth2 authentification</H>
+            <Button appearance="fill"onClick={ () => window.location.href = "/api/app/login"}>sign in</Button>
+        </div>
+    </>
     
-    return  <div className={"home " + className}>
-                <h1>Pizi Server</h1>
-                <div className="main-infos">
-                    <span>{infos.https ? "https" : "http"}</span>
-                    <span>on</span>
-                    <span>{infos.port}</span>
-                    <span>
+    return  <div className="pizi-container home">
+                { !token ? publicHome : <H tag="h1">
+                    Pizi Server
+                    <span className="date">
                         <div>
                         {
-                            currentTime.toLocaleDateString('en-US', {weekday: 'long'}).toLowerCase() + " " +
-                            currentTime.toLocaleDateString('en-US', {day: 'numeric'}) + " " +
-                            currentTime.toLocaleDateString('en-US', {month: 'long'}).toLowerCase()  + " "  +
-                            currentTime.toLocaleDateString('en-US', {year: 'numeric'}) 
+                            [currentTime.toLocaleDateString('en-US', {weekday: 'long'}).toLowerCase(),
+                            currentTime.toLocaleDateString('en-US', {day: 'numeric'}),
+                            currentTime.toLocaleDateString('en-US', {month: 'long'}).toLowerCase(),
+                            currentTime.toLocaleDateString('en-US', {year: 'numeric'})].join(" ")
                         }
                         </div>
-                        <div>
+                        <div className="time">
                         {
-                            currentTime.toLocaleTimeString()
+                            currentTime.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'})
                         }
                         </div>
-                     </span>
-                </div>
-                <div className={"infos"}>
-                    <h3>Modules</h3>
+                    </span>
+                </H>}
+
+                <div className={"infos hidden"}>
+                    <Heading tag="h3">Modules</Heading>
                     <div className={"items " + ( displayDetail ? "display-details" : "")}>
                         <div className={"info " + ( displayDetail === "jwt" ? "active" : "")} onClick={ e => setDisplayDetail(displayDetail === "jwt" ? "" : "jwt")}>
                             <div className="badge">
@@ -124,14 +133,14 @@ export const Home = ({className, infos, token}:HomeProps) => {
                                 <FontAwesomeIcon icon="plug"/>
                                 <label>rest api</label>
                                 <span>
-                                    <a className="rest-url" href={infos.rest.url} target="_blank">{infos.rest.url}</a>
+                                    <a className="rest-url" href={infos.rest?.url} target="_blank">{infos.rest?.url}</a>
                                 </span>
                             </div>
                             <ul className="detail">
                                 <h4>informations</h4>
                                 <li>
                                     <label>endpoint:</label>
-                                    <span><a className="rest-url" href={infos.rest.url} target="_blank">{infos.rest.url}</a></span>
+                                    <span><a className="rest-url" href={infos.rest?.url} target="_blank">{infos.rest?.url}</a></span>
                                 </li>
                                 <li>
                                     <label>rest ui:</label>
@@ -143,7 +152,7 @@ export const Home = ({className, infos, token}:HomeProps) => {
                             <div className="badge">
                                 <FontAwesomeIcon icon="binoculars"/>
                                 <label>loggers</label>
-                                <span>{infos.logger.server}</span>
+                                <span>{infos.logger?.server}</span>
                             </div>
                             <ul className="detail">
                                 <h4>server</h4>
@@ -162,8 +171,8 @@ export const Home = ({className, infos, token}:HomeProps) => {
                         </div>
                     </div>
                 </div>
-                <div className="apps">
-                    <h3>Applications</h3>
+                <div className="apps hidden">
+                    <Heading tag="h3" appearance='simple'>Applications</Heading>
                     <div className="apps-list">
                         {infos.apps.map((app:any) => <a className="app" target="_blank" href={"/" + app.name}>
                                             <img src={"/" + app.name + "/icon.png"} onError={e => e.currentTarget.src = "/app-no-logo.png"}/>

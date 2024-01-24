@@ -1,28 +1,22 @@
-import React, { useState, useEffect, CSSProperties } from 'react';
-import { Link, Route, useParams } from 'react-router-dom';
-import { RestUIDetail } from './RestUIDetail';
+import React, { PropsWithChildren } from 'react'
+import { useParams } from 'react-router-dom'
+import { AppScreenProps, ClassNameHelper, Heading, Link, List } from 'pizi-react'
 
-type RestUIProps = {
+interface RestUIProps extends AppScreenProps, PropsWithChildren{
     className?: string
 }
  
-export const RestUI = ({className}:RestUIProps) => {
-    let { collectionId } = useParams();
-    return  <div className={"rest-ui " + className}>
-                <h1>Pizi REST</h1>
+export const RestUI: React.FC<RestUIProps> = (props) => {
+    const { collectionName } = useParams()
+
+    const items = ["users", "roles"].map((allowedCollectionName) => <Link size='large' className={ClassNameHelper({active: collectionName === allowedCollectionName})} to={`/rest/${allowedCollectionName}`}>{allowedCollectionName}</Link>)
+
+    return  <div className="pizi-container rest">
+                <Heading tag="h2">REST API</Heading>
                 <div className="collections">
-                    <h3>Collections</h3>
-                    <ul>
-                        <li className={collectionId === "users" ? "active" : ""}>
-                            <Link to="/pizi-rest-ui/users">Users</Link>
-                        </li>
-                        <li className={collectionId === "games" ? "active" : ""}>
-                            <Link to="/pizi-rest-ui/games">Games</Link>
-                        </li>
-                    </ul>
+                    <Heading tag="h3" color='teritary'>Collections</Heading>
+                    <List items={items} styleType='arrow' size="large"/>
                 </div>
-                    <Route path="/pizi-rest-ui/:collectionId">
-                        <RestUIDetail/>
-                    </Route>
+                <div className="pizi-container detail">{props.children}</div> 
             </div>
 }

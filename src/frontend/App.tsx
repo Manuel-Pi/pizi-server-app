@@ -1,28 +1,30 @@
-import React, { Component } from 'react';
-import { Home } from './screens/Home/Home';
-import { Login } from './screens/Login/Login';
-import { Screen2 } from './screens/Screen2';
-import { Screen3 } from './screens/Screen3';
-import { Footer } from './components/Footer/Footer';
-import { RestUI } from './screens/RestUI/RestUI';
-import { Token } from './utils/Token';
-import { Button } from 'pizi-react';
+import React, { Component, StrictMode, createContext } from 'react'
+import { Home } from './screens/Home/Home'
+import { Footer } from './components/Footer/Footer'
+import { RestUI } from './screens/RestUI/RestUI'
+import { Token, TokenContext } from './utils/Token'
+import { MenuApp } from 'pizi-react'
+import { Account } from './screens/Account/Account'
+import { RestUIDetail } from './screens/RestUI/RestUIDetail'
+import { Login } from './screens/Login/Login'
 
 type AppProps = {
     socket: any
 }
 
 type AppState = {
-    infos: any,
+    infos: any
     token: any
+    user: any
 }
 
 export class App extends Component<AppProps, AppState> {
 
     constructor(props: AppProps){
-        super(props);
+        super(props)
         this.state = {
-            token: {},
+            token: null,
+            user: null,
             infos: {
                 apps: [],
                 logger: {},
@@ -36,20 +38,43 @@ export class App extends Component<AppProps, AppState> {
         }
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         // Try to reconnect
         this.props.socket.on("connect", () => {
             // TODO: implement
-        });
+        })
+        this.props.socket.on("infos", (infos :any) => this.setState({infos}))
 
-        this.props.socket.on("infos", (infos :any) => this.setState({infos}));
-        Token.getToken().then(token => token && this.setState({token}));
+        const token = await Token.getToken()
+        if(!token) return
+        this.setState({token})
+        await this.getLoggedUser()
+    }
+
+    async getLoggedUser(){
+        const token = await Token.getToken()
+        if(token){
+            const response = await fetch(`/api/rest/users/${token.userId}`, { headers: Token.getAuthorizationHeader() })
+            const user = await response.json()
+            this.setState({user})
+        }
     }
 
     render(){
         return  <>
-                    <Button>Test</Button>
-                    <Footer/>
+                    <StrictMode>
+                        <TokenContext.Provider value={this.state.token}>
+                            <MenuApp appearance='fill' color='main' logo={<img src="/icon.png"></img>} user={this.state.user?.username}>
+                                <Login   title="Account" path="/login"   icon="user" user={this.state.user} noMenu hideInMenu></Login>
+                                <Home    title="Home"    path="/"        icon="home" noMenu={!this.state.user}/>
+                                <Account title="Account" path="/account" icon="user" user={this.state.user} hideInMenu={!this.state.user}/>
+                                <RestUI  title="Rest UI" path="/rest"    icon="plug" hideInMenu={!this.state.user}>
+                                    <RestUIDetail title="Rest UI" path="/:collectionName" icon="plug" hideInMenu/>
+                                </RestUI>
+                            </MenuApp>
+                        </TokenContext.Provider>
+                        <Footer/>
+                    </StrictMode>
                 </>
     }
 }
