@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { AppScreenProps, Button, Heading, SelectInput, Table, TextInput } from 'pizi-react'
-import { Token } from '../../utils/Token'
+import { Button, Heading, REST, SelectInput, TextInput, Token } from 'pizi-react'
 
-type AccountProps = AppScreenProps & {
+type AccountProps = {
     user?: any
 }
  
-export const Account = ({user = {}}: AccountProps) => {
+export const Account = (props: AccountProps) => {
 
     const [roles, setRoles] = useState<any[]>([])
 
     async function loginLogout(){
-        if(user){
+        if(props.user){
             await Token.clearToken()
             location.href = "/"
         } else {
@@ -20,24 +19,21 @@ export const Account = ({user = {}}: AccountProps) => {
     }
 
     async function getRoles(userId: string){
-        const response = await fetch(`/api/rest/users/${userId}/roles`, { headers: { 'Content-Type': 'application/json' }})
-        if(response.status === 200){
-            const roles = await response.json()
-            setRoles(roles)
-        }
+        const roles = await REST.get('users', userId, 'roles')
+        setRoles(roles)
     }
 
     useEffect(() => {
-        if(user) getRoles(user.id)
-    }, [user])
+        if(props.user) getRoles(props.user.id)
+    }, [props.user])
 
     return  <div className="pizi-container account">
                 <Heading tag="h2">Account</Heading>
                 <div className="pizi-container user-infos">
                 {    
-                    user ?  <>
-                                <TextInput label="username" defaultValue={user.username} readOnly/>
-                                <TextInput label="email" defaultValue={user.email} readOnly/>
+                    props.user ?  <>
+                                <TextInput label="username" defaultValue={props.user.username} readOnly/>
+                                <TextInput label="email" defaultValue={props.user.email} readOnly/>
                                 <SelectInput label="roles" options={roles.map(role => ({label: role.name}))} multiple readOnly/>
                                 <Button className="logout" appearance="fill" onClick={loginLogout} color="error">sign out</Button>
                             </>

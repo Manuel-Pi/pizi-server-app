@@ -1,9 +1,8 @@
 import React, { useContext, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Token, TokenContext } from '../../utils/Token'
-import { AppScreenProps } from 'pizi-react'
+import { REST, TokenContext } from 'pizi-react'
 
-type RestUIDetailProps =  AppScreenProps & {
+type RestUIDetailProps = {
     className?: string
 }
 
@@ -16,8 +15,7 @@ export const RestUIDetail = ({className}:RestUIDetailProps) => {
 
     async function getDocuments(){
         try{
-            const response = await fetch("/api/rest/" + collectionName, { headers: Token.getAuthorizationHeader() })
-            const json = await response.json()
+            const json = await REST.list(collectionName!)
             setJson(json)
             oldCollectionName = collectionName
         } catch(e){

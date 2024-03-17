@@ -3,10 +3,10 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
 const CopyWebpackPlugin = require("copy-webpack-plugin")
+const TerserPlugin = require("terser-webpack-plugin")
 
 module.exports = {
     mode: "production",
-    watch: true,
 
     // Enable sourcemaps for debugging webpack's output.
     devtool: "source-map",
@@ -16,13 +16,16 @@ module.exports = {
     },
 
     output:{
-        path: __dirname + '/dist',
+        path: __dirname + '/dist/client',
         filename: '[name].js',
     },
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx",".js", ".jsx", ".less"]
+        extensions: [".ts", ".tsx",".js", ".jsx", ".less"],
+        extensionAlias: {
+            '.js': ['.tsx','.ts', '.js']
+        }
     },
 
     module: {
@@ -62,14 +65,15 @@ module.exports = {
         }),
         new CopyWebpackPlugin({
             patterns: [
-                { from: "./src/frontend/index.html", to: __dirname + '/dist' },
-                { from: "./src/frontend/icon.png", to: __dirname + '/dist' }
+                { from: "./src/frontend/index.html", to: __dirname + '/dist/client' },
+                { from: "./src/frontend/icon.png", to: __dirname + '/dist/client' }
             ]
         })
     ],
     optimization: {
         minimizer: [
-          new CssMinimizerPlugin()
+          new CssMinimizerPlugin(),
+          new TerserPlugin()
         ]
     },
     externals:{

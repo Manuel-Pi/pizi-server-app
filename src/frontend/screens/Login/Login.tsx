@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { AppScreenProps, Button, ClassNameHelper, Heading, Link, Switch, TextInput } from 'pizi-react'
-import { Token } from '../../utils/Token'
+import { Button, ClassNameHelper, Heading, Link, Switch, TextInput, isBrowser, Token } from 'pizi-react'
 
-type LoginProps = AppScreenProps & {
+type LoginProps = {
     user?: any
 }
  
-export const Login = ({user = {}}: LoginProps) => {
+export const Login = (props: LoginProps) => {
     const[username, setUsername] = useState("")
     const[password, setPassword] = useState("")
     const[stayConnected, setStayConnected] = useState(false)
     const[loginError, setLoginError] = useState("")
     const[loginAnimation, setLoginAnimation] = useState(false)
 
-    const urlParams = new URLSearchParams(window.location.search)
+    const urlParams = new URLSearchParams(isBrowser() ? window.location.search : {})
     const client_id = urlParams.get('clientId')
     const response_type = urlParams.get('responseType')
     const state = urlParams.get('state')
@@ -28,7 +27,7 @@ export const Login = ({user = {}}: LoginProps) => {
     const login = async () => {
         try{
             setLoginAnimation(false)
-            if(user){
+            if(props.user){
                 await Token.clearToken()
                 location.href = "/"
             } else {
@@ -66,7 +65,7 @@ export const Login = ({user = {}}: LoginProps) => {
                 <div className="pizi-container login-box">
                     <Heading tag="h2">Login</Heading>
                     {
-                        user ? <>
+                        props.user ? <>
                             <Button appearance="fill" onClick={login} color="error">sign out</Button>
                         </> : <>
                             <TextInput type="text" className="username" label="Username" onChange={setUsername} onKeyEnter={login} />

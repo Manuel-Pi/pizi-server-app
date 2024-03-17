@@ -1,8 +1,9 @@
 import React, { PropsWithChildren } from 'react'
 import { useParams } from 'react-router-dom'
-import { AppScreenProps, ClassNameHelper, Heading, Link, List } from 'pizi-react'
+import { ClassNameHelper, Heading, Link, List } from 'pizi-react'
+import { Outlet } from 'react-router-dom'
 
-interface RestUIProps extends AppScreenProps, PropsWithChildren{
+interface RestUIProps extends PropsWithChildren{
     className?: string
 }
  
@@ -17,6 +18,6 @@ export const RestUI: React.FC<RestUIProps> = (props) => {
                     <Heading tag="h3" color='teritary'>Collections</Heading>
                     <List items={items} styleType='arrow' size="large"/>
                 </div>
-                <div className="pizi-container detail">{props.children}</div> 
+                <div className="pizi-container detail"><Outlet/></div> 
             </div>
 }
