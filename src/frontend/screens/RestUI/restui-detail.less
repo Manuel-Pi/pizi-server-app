@@ -1,66 +1,46 @@
 .rest-ui-detail{
     width: 100%;
-    padding: 8px 0 16px 0;
-    overflow: auto;
+    height: 80%;
+    overflow: unset;
+    
+    .pizi-spinner{
+        font-size: 2em;
+        margin-top: 3em;
+    }
+
+    .pizi-button{
+        &:not(.selected){
+            color: @color-teritary;
+        }
+    }
+    
+    .detail{
+        width: 100%;
+        min-height: 500px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .pizi-table{
+        height: calc(~"100% - 200px");
+        min-height: 300px;
+    }
 
     table{
-        font-size: 14px;
-        border-collapse: collapse;
-
-        thead{
-            th{
-                padding: 4px;
-                text-align: left;
-                color: peru;
-            }
-        }
         tbody{
-            td{
-                padding: 4px;
-                vertical-align: top;
-            }
+            color: @color-white;
+
             tr:nth-child(even){
-                background-color: #333;
+                background-color: #222;
             }
         }
     }
-}
 
-.json-object{
-    font-size: 14px;
-    border-left: 1px solid #333;
-
-    .json-object-value{
-        color: #BBB;
-        padding-left: 10px;
-    }
-    .json-object-key{
-        color: #666;
-        padding-right: 8px;
-
-        & + .json-object > .delimiter{
-            display: none;
+    .total{
+        color: @color-white;
+        
+        span{
+            margin-right: 4px;
         }
     }
-
-    & + .json-object{
-        margin-top: 8px;
-    }
-}
-
-.json-array{
-    > .json-object{
-        &:nth-child(even){
-            background-color: #333;
-            border-left: 1px solid #444;
-
-            .json-object-key{
-                color: #777;
-            }
-        }
-    }
-}
-
-.json-array .json-object, .json-object .json-object{
-    padding-left: 10px;
 }

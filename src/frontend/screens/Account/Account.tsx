@@ -1,44 +1,43 @@
-import React, { useEffect, useState } from 'react'
-import { AppScreenProps, Button, Heading, SelectInput, Table, TextInput } from 'pizi-react'
-import { Token } from '../../utils/Token'
-
-type AccountProps = AppScreenProps & {
-    user?: any
-}
+import React, { Suspense, use, useMemo } from 'react'
+import { Button, Heading, SelectInput, Spinner, TextInput, Token } from 'pizi-react'
+import { AppContext } from '../../utils/Utils.js'
  
-export const Account = ({user = {}}: AccountProps) => {
+type UserRolesProps = {
+    userRolesPromise: React.Usable<any[]>
+}
 
-    const [roles, setRoles] = useState<any[]>([])
-
+export const Account = () => {
+    const { api: API, ...appContext } = use(AppContext)
+    
     async function loginLogout(){
-        if(user){
+        if(appContext.user){
             await Token.clearToken()
             location.href = "/"
         } else {
-            window.location.href = "/api/app/login"
+            location.href = "/api/app/login"
         }
     }
 
-    async function getRoles(userId: string){
-        const response = await fetch(`/api/rest/users/${userId}/roles`, { headers: { 'Content-Type': 'application/json' }})
-        if(response.status === 200){
-            const roles = await response.json()
-            setRoles(roles)
-        }
+    function UserRoles({userRolesPromise}: UserRolesProps){
+        const userRoles = use(userRolesPromise)
+        return <SelectInput label="roles" itemsSize={4} loading={!userRoles.length} options={userRoles.map((role: any) => ({label: role.name}))} multiple readOnly/>
     }
 
-    useEffect(() => {
-        if(user) getRoles(user.id)
-    }, [user])
+    function getUserRoles(){
+        if(!API?.users || !appContext?.user?.id) return Promise.resolve([])
+        return API.users.queries.getRoles(appContext.user.id).catch((e: Error) => { return []})
+    }
+
+    const userRolesPromise = useMemo(() => getUserRoles(), [appContext.user])
 
     return  <div className="pizi-container account">
                 <Heading tag="h2">Account</Heading>
                 <div className="pizi-container user-infos">
                 {    
-                    user ?  <>
-                                <TextInput label="username" defaultValue={user.username} readOnly/>
-                                <TextInput label="email" defaultValue={user.email} readOnly/>
-                                <SelectInput label="roles" options={roles.map(role => ({label: role.name}))} multiple readOnly/>
+                    appContext.user ?  <>
+                                <TextInput label="username" defaultValue={appContext.user.username} readOnly/>
+                                <TextInput label="email" defaultValue={appContext.user.email} readOnly/>
+                                <Suspense fallback={<SelectInput label="roles" itemsSize={4} loading={true} multiple readOnly options={[]}/>}><UserRoles userRolesPromise={userRolesPromise}/></Suspense>
                                 <Button className="logout" appearance="fill" onClick={loginLogout} color="error">sign out</Button>
                             </>
                         :

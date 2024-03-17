@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react'
-import { AppScreenProps, Button, ClassNameHelper, Heading, Link, Switch, TextInput } from 'pizi-react'
-import { Token } from '../../utils/Token'
+import React, { useContext, useEffect, useState } from 'react'
+import { Button, ClassNameHelper, Heading, Link, Switch, TextInput, isBrowser, Token } from 'pizi-react'
+import { AppContext } from '../../utils/Utils.js'
 
-type LoginProps = AppScreenProps & {
-    user?: any
+type LoginProps = {
 }
  
-export const Login = ({user = {}}: LoginProps) => {
+export const Login = (props: LoginProps) => {
     const[username, setUsername] = useState("")
     const[password, setPassword] = useState("")
     const[stayConnected, setStayConnected] = useState(false)
     const[loginError, setLoginError] = useState("")
     const[loginAnimation, setLoginAnimation] = useState(false)
+    const appContext = useContext(AppContext)
 
-    const urlParams = new URLSearchParams(window.location.search)
-    const client_id = urlParams.get('clientId')
-    const response_type = urlParams.get('responseType')
-    const state = urlParams.get('state')
-    const code_challenge_method =urlParams.get('codeChallengeMethod')
-    const code_challenge = urlParams.get('codeChallenge')
+    const urlParams = new URLSearchParams(isBrowser() ? window.location.search : {})
+    const client_id             = urlParams.get('clientId')
+    const response_type         = urlParams.get('responseType')
+    const state                 = urlParams.get('state')
+    const code_challenge_method = urlParams.get('codeChallengeMethod')
+    const code_challenge        = urlParams.get('codeChallenge')
 
     useEffect(()=>{
         setLoginError("")
@@ -28,7 +28,7 @@ export const Login = ({user = {}}: LoginProps) => {
     const login = async () => {
         try{
             setLoginAnimation(false)
-            if(user){
+            if(appContext.user){
                 await Token.clearToken()
                 location.href = "/"
             } else {
@@ -66,7 +66,7 @@ export const Login = ({user = {}}: LoginProps) => {
                 <div className="pizi-container login-box">
                     <Heading tag="h2">Login</Heading>
                     {
-                        user ? <>
+                        appContext.user ? <>
                             <Button appearance="fill" onClick={login} color="error">sign out</Button>
                         </> : <>
                             <TextInput type="text" className="username" label="Username" onChange={setUsername} onKeyEnter={login} />

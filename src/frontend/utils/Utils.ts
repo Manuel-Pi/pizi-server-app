@@ -1,3 +1,45 @@
-export const CreateClassName = (classNames:any, additionalString:string = ""):string => {
-    return Object.keys(classNames).map((className:string) => classNames[className] ? className : "").join(' ') + ' ' + additionalString;
+import { createAppContext } from "pizi-react"
+
+export type IQuery = (filters?: any) => Promise<any> | Promise<any[]>
+export type IMutation = (filters?: any) => Promise<any> | Promise<any[]>
+
+export interface ModelApi<T extends Object = any> extends IApi{
+    queries: {
+        get:( id: string) => Promise<T>
+        list:( filter: any ) => Promise<T[]>
+    }
+    mutations: {
+        create:( model: T) => Promise<void>
+        update:( model: T) => Promise<void>
+        delete:( id: string ) => Promise<void>
+    }
 }
+
+export interface IApi{
+    queries?: { [key: string]: IQuery }
+    mutations?: { [key: string]: IMutation }
+}
+
+export type IServerApi = {
+    [key: string]: IApi
+}
+
+export interface ServerApi extends IServerApi{
+    users: ModelApi & {
+        queries: { getRoles:( id: string) => Promise<any[]> }
+    }
+    roles: ModelApi
+    oauthTokens: ModelApi
+    oauthClients: ModelApi
+    oauthAuthorizationCodes: ModelApi
+}
+
+export interface IAppContext<ServerAPI>{
+    browser: boolean
+    ssr: boolean
+    token?: string
+    user?: any
+    api?: ServerAPI
+}
+
+export const AppContext = createAppContext<ServerApi>()

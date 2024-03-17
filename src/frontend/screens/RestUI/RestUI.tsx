@@ -1,22 +1,30 @@
-import React, { PropsWithChildren } from 'react'
-import { useParams } from 'react-router-dom'
-import { AppScreenProps, ClassNameHelper, Heading, Link, List } from 'pizi-react'
+import React, { PropsWithChildren, useState } from 'react'
+import { useParams, Outlet, redirect, Navigate } from 'react-router-dom'
+import { ClassNameHelper, Heading, Link, List, SelectInput } from 'pizi-react'
 
-interface RestUIProps extends AppScreenProps, PropsWithChildren{
+interface RestUIProps extends PropsWithChildren{
     className?: string
 }
  
 export const RestUI: React.FC<RestUIProps> = (props) => {
     const { collectionName } = useParams()
+    const [selectedCollection, setSelectedCollection] = useState<string>(collectionName || "")
 
-    const items = ["users", "roles"].map((allowedCollectionName) => <Link size='large' className={ClassNameHelper({active: collectionName === allowedCollectionName})} to={`/rest/${allowedCollectionName}`}>{allowedCollectionName}</Link>)
+    const selectItems = [
+        "",
+        "users",
+        "roles",
+        "oauthTokens",
+        "oauthClients",
+        "oauthAuthorizationCodes"
+    ].map(label => ({ label, selected: label === selectedCollection }))
 
     return  <div className="pizi-container rest">
                 <Heading tag="h2">REST API</Heading>
                 <div className="collections">
-                    <Heading tag="h3" color='teritary'>Collections</Heading>
-                    <List items={items} styleType='arrow' size="large"/>
+                    <Heading tag="h3" color='teritary'>Collections: <SelectInput options={selectItems} onChange={setSelectedCollection}/></Heading>
                 </div>
-                <div className="pizi-container detail">{props.children}</div> 
+                {selectedCollection && collectionName !== selectedCollection && <Navigate to={`/rest/${selectedCollection}`}/>}
+                <Outlet/>
             </div>
 }

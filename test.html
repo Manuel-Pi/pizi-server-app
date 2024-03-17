@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charSet="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="preload" as="image" href="/icon.png" />
+    <title>Pizi Server</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="apple-touch-icon" href="/icon.png" />
+    <link rel="icon" href="/icon.png" />
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <script defer="" crossorigin="anonymous"
+        src="https://unpkg.com/react@19.0.0-canary-a73c3450e-20240329/umd/react.development.js"></script>
+    <script defer="" crossorigin="anonymous"
+        src="https://unpkg.com/react-dom@19.0.0-canary-a73c3450e-20240329/umd/react-dom.development.js"></script>
+    <script defer="" src="/socket.io/socket.io.js"></script>
+    <script defer="" src="/api/client.js"></script>
+    <script defer="" src="/server-app.js"></script>
+    <style type="text/css">
+        :root,
+        :host {
+            --fa-font-solid: normal 900 1em/1 &quot;
+            Font Awesome 6 Solid&quot;
+            ;
+            --fa-font-regular: normal 400 1em/1 &quot;
+            Font Awesome 6 Regular&quot;
+            ;
+            --fa-font-light: normal 300 1em/1 &quot;
+            Font Awesome 6 Light&quot;
+            ;
+            --fa-font-thin: normal 100 1em/1 &quot;
+            Font Awesome 6 Thin&quot;
+            ;
+            --fa-font-duotone: normal 900 1em/1 &quot;
+            Font Awesome 6 Duotone&quot;
+            ;
+            --fa-font-sharp-solid: normal 900 1em/1 &quot;
+            Font Awesome 6 Sharp&quot;
+            ;
+            --fa-font-sharp-regular: normal 400 1em/1 &quot;
+            Font Awesome 6 Sharp&quot;
+            ;
+            --fa-font-sharp-light: normal 300 1em/1 &quot;
+            Font Awesome 6 Sharp&quot;
+            ;
+            --fa-font-sharp-thin: normal 100 1em/1 &quot;
+            Font Awesome 6 Sharp&quot;
+            ;
+            --fa-font-brands: normal 400 1em/1 &quot;
+            Font Awesome 6 Brands&quot;
+            ;
+        }
+
+        svg:not(:root).svg-inline--fa,
+        svg:not(:host).svg-inline--fa {
+            overflow: visible;
+            box-sizing: content-box;
+        }
+
+        .svg-inline--fa {
+            display: var(--fa-display, inline-block);
+            height: 1em;
+            overflow: visible;
+            vertical-align: -0.125em;
+        }
+
+        .svg-inline--fa.fa-2xs {
+            vertical-align: 0.1em;
+        }
+
+        .svg-inline--fa.fa-xs {
+            vertical-align: 0em;
+        }
+
+        .svg-inline--fa.fa-sm {
+            vertical-align: -0.0714285705em;
+        }
+
+        .svg-inline--fa.fa-lg {
+            vertical-align: -0.2em;
+        }
+
+        .svg-inline--fa.fa-xl {
+            vertical-align: -0.25em;
+        }
+
+        .svg-inline--fa.fa-2xl {
+            vertical-align: -0.3125em;
+        }
+
+        .svg-inline--fa.fa-pull-left {
+            margin-right: var(--fa-pull-margin, 0.3em);
+            width: auto;
+        }
+
+        .svg-inline--fa.fa-pull-right {
+            margin-left: var(--fa-pull-margin, 0.3em);
+            width: auto;
+        }
+
+        .svg-inline--fa.fa-li {
+            width: var(--fa-li-width, 2em);
+            top: 0.25em;
+        }
+
+        .svg-inline--fa.fa-fw {
+            width: var(--fa-fw-width, 1.25em);
+        }
+
+        .fa-layers svg.svg-inline--fa {
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .fa-layers-counter,
+        .fa-layers-text {
+            display: inline-block;
+            position: absolute;
+            text-align: center;
+        }
+
+        .fa-layers {
+            display: inline-block;
+            height: 1em;
+            position: relative;
+            text-align: center;
+            vertical-align: -0.125em;
+            width: 1em;
+        }
+
+        .fa-layers svg.svg-inline--fa {
+            -webkit-transform-origin: center center;
+            transform-origin: center center;
+        }
+
+        .fa-layers-text {
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            -webkit-transform-origin: center center;
+            transform-origin: center center;
+        }
+
+        .fa-layers-counter {
+            background-color: var(--fa-counter-background-color, #ff253a);
+            border-radius: var(--fa-counter-border-radius, 1em);
+            box-sizing: border-box;
+            color: var(--fa-inverse, #fff);
+            line-height: var(--fa-counter-line-height, 1);
+            max-width: var(--fa-counter-max-width, 5em);
+            min-width: var(--fa-counter-min-width, 1.5em);
+            overflow: hidden;
+            padding: var(--fa-counter-padding, 0.25em 0.5em);
+            right: var(--fa-right, 0);
+            text-overflow: ellipsis;
+            top: var(--fa-top, 0);
+            -webkit-transform: scale(var(--fa-counter-scale, 0.25));
+            transform: scale(var(--fa-counter-scale, 0.25));
+            -webkit-transform-origin: top right;
+            transform-origin: top right;
+        }
+
+        .fa-layers-bottom-right {
+            bottom: var(--fa-bottom, 0);
+            right: var(--fa-right, 0);
+            top: auto;
+            -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+            transform: scale(var(--fa-layers-scale, 0.25));
+            -webkit-transform-origin: bottom right;
+            transform-origin: bottom right;
+        }
+
+        .fa-layers-bottom-left {
+            bottom: var(--fa-bottom, 0);
+            left: var(--fa-left, 0);
+            right: auto;
+            top: auto;
+            -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+            transform: scale(var(--fa-layers-scale, 0.25));
+            -webkit-transform-origin: bottom left;
+            transform-origin: bottom left;
+        }
+
+        .fa-layers-top-right {
+            top: var(--fa-top, 0);
+            right: var(--fa-right, 0);
+            -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+            transform: scale(var(--fa-layers-scale, 0.25));
+            -webkit-transform-origin: top right;
+            transform-origin: top right;
+        }
+
+        .fa-layers-top-left {
+            left: var(--fa-left, 0);
+            right: auto;
+            top: var(--fa-top, 0);
+            -webkit-transform: scale(var(--fa-layers-scale, 0.25));
+            transform: scale(var(--fa-layers-scale, 0.25));
+            -webkit-transform-origin: top left;
+            transform-origin: top left;
+        }
+
+        .fa-1x {
+            font-size: 1em;
+        }
+
+        .fa-2x {
+            font-size: 2em;
+        }
+
+        .fa-3x {
+            font-size: 3em;
+        }
+
+        .fa-4x {
+            font-size: 4em;
+        }
+
+        .fa-5x {
+            font-size: 5em;
+        }
+
+        .fa-6x {
+            font-size: 6em;
+        }
+
+        .fa-7x {
+            font-size: 7em;
+        }
+
+        .fa-8x {
+            font-size: 8em;
+        }
+
+        .fa-9x {
+            font-size: 9em;
+        }
+
+        .fa-10x {
+            font-size: 10em;
+        }
+
+        .fa-2xs {
+            font-size: 0.625em;
+            line-height: 0.1em;
+            vertical-align: 0.225em;
+        }
+
+        .fa-xs {
+            font-size: 0.75em;
+            line-height: 0.0833333337em;
+            vertical-align: 0.125em;
+        }
+
+        .fa-sm {
+            font-size: 0.875em;
+            line-height: 0.0714285718em;
+            vertical-align: 0.0535714295em;
+        }
+
+        .fa-lg {
+            font-size: 1.25em;
+            line-height: 0.05em;
+            vertical-align: -0.075em;
+        }
+
+        .fa-xl {
+            font-size: 1.5em;
+            line-height: 0.0416666682em;
+            vertical-align: -0.125em;
+        }
+
+        .fa-2xl {
+            font-size: 2em;
+            line-height: 0.03125em;
+            vertical-align: -0.1875em;
+        }
+
+        .fa-fw {
+            text-align: center;
+            width: 1.25em;
+        }
+
+        .fa-ul {
+            list-style-type: none;
+            margin-left: var(--fa-li-margin, 2.5em);
+            padding-left: 0;
+        }
+
+        .fa-ul &gt;
+
+        li {
+            position: relative;
+        }
+
+        .fa-li {
+            left: calc(var(--fa-li-width, 2em) * -1);
+            position: absolute;
+            text-align: center;
+            width: var(--fa-li-width, 2em);
+            line-height: inherit;
+        }
+
+        .fa-border {
+            border-color: var(--fa-border-color, #eee);
+            border-radius: var(--fa-border-radius, 0.1em);
+            border-style: var(--fa-border-style, solid);
+            border-width: var(--fa-border-width, 0.08em);
+            padding: var(--fa-border-padding, 0.2em 0.25em 0.15em);
+        }
+
+        .fa-pull-left {
+            float: left;
+            margin-right: var(--fa-pull-margin, 0.3em);
+        }
+
+        .fa-pull-right {
+            float: right;
+            margin-left: var(--fa-pull-margin, 0.3em);
+        }
+
+        .fa-beat {
+            -webkit-animation-name: fa-beat;
+            animation-name: fa-beat;
+            -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, ease-in-out);
+            animation-timing-function: var(--fa-animation-timing, ease-in-out);
+        }
+
+        .fa-bounce {
+            -webkit-animation-name: fa-bounce;
+            animation-name: fa-bounce;
+            -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.28, 0.84, 0.42, 1));
+            animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.28, 0.84, 0.42, 1));
+        }
+
+        .fa-fade {
+            -webkit-animation-name: fa-fade;
+            animation-name: fa-fade;
+            -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+            animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+        }
+
+        .fa-beat-fade {
+            -webkit-animation-name: fa-beat-fade;
+            animation-name: fa-beat-fade;
+            -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+            animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+        }
+
+        .fa-flip {
+            -webkit-animation-name: fa-flip;
+            animation-name: fa-flip;
+            -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, ease-in-out);
+            animation-timing-function: var(--fa-animation-timing, ease-in-out);
+        }
+
+        .fa-shake {
+            -webkit-animation-name: fa-shake;
+            animation-name: fa-shake;
+            -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, linear);
+            animation-timing-function: var(--fa-animation-timing, linear);
+        }
+
+        .fa-spin {
+            -webkit-animation-name: fa-spin;
+            animation-name: fa-spin;
+            -webkit-animation-delay: var(--fa-animation-delay, 0s);
+            animation-delay: var(--fa-animation-delay, 0s);
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 2s);
+            animation-duration: var(--fa-animation-duration, 2s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, linear);
+            animation-timing-function: var(--fa-animation-timing, linear);
+        }
+
+        .fa-spin-reverse {
+            --fa-animation-direction: reverse;
+        }
+
+        .fa-pulse,
+        .fa-spin-pulse {
+            -webkit-animation-name: fa-spin;
+            animation-name: fa-spin;
+            -webkit-animation-direction: var(--fa-animation-direction, normal);
+            animation-direction: var(--fa-animation-direction, normal);
+            -webkit-animation-duration: var(--fa-animation-duration, 1s);
+            animation-duration: var(--fa-animation-duration, 1s);
+            -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+            -webkit-animation-timing-function: var(--fa-animation-timing, steps(8));
+            animation-timing-function: var(--fa-animation-timing, steps(8));
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .fa-beat,
+            .fa-bounce,
+            .fa-fade,
+            .fa-beat-fade,
+            .fa-flip,
+            .fa-pulse,
+            .fa-shake,
+            .fa-spin,
+            .fa-spin-pulse {
+                -webkit-animation-delay: -1ms;
+                animation-delay: -1ms;
+                -webkit-animation-duration: 1ms;
+                animation-duration: 1ms;
+                -webkit-animation-iteration-count: 1;
+                animation-iteration-count: 1;
+                -webkit-transition-delay: 0s;
+                transition-delay: 0s;
+                -webkit-transition-duration: 0s;
+                transition-duration: 0s;
+            }
+        }
+
+        @-webkit-keyframes fa-beat {
+
+            0%,
+            90% {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+            }
+
+            45% {
+                -webkit-transform: scale(var(--fa-beat-scale, 1.25));
+                transform: scale(var(--fa-beat-scale, 1.25));
+            }
+        }
+
+        @keyframes fa-beat {
+
+            0%,
+            90% {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+            }
+
+            45% {
+                -webkit-transform: scale(var(--fa-beat-scale, 1.25));
+                transform: scale(var(--fa-beat-scale, 1.25));
+            }
+        }
+
+        @-webkit-keyframes fa-bounce {
+            0% {
+                -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+            }
+
+            10% {
+                -webkit-transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+                transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+            }
+
+            30% {
+                -webkit-transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+                transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+            }
+
+            50% {
+                -webkit-transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+                transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+            }
+
+            57% {
+                -webkit-transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+                transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+            }
+
+            64% {
+                -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+            }
+
+            100% {
+                -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+            }
+        }
+
+        @keyframes fa-bounce {
+            0% {
+                -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+            }
+
+            10% {
+                -webkit-transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+                transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+            }
+
+            30% {
+                -webkit-transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+                transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+            }
+
+            50% {
+                -webkit-transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+                transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+            }
+
+            57% {
+                -webkit-transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+                transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+            }
+
+            64% {
+                -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+            }
+
+            100% {
+                -webkit-transform: scale(1, 1) translateY(0);
+                transform: scale(1, 1) translateY(0);
+            }
+        }
+
+        @-webkit-keyframes fa-fade {
+            50% {
+                opacity: var(--fa-fade-opacity, 0.4);
+            }
+        }
+
+        @keyframes fa-fade {
+            50% {
+                opacity: var(--fa-fade-opacity, 0.4);
+            }
+        }
+
+        @-webkit-keyframes fa-beat-fade {
+
+            0%,
+            100% {
+                opacity: var(--fa-beat-fade-opacity, 0.4);
+                -webkit-transform: scale(1);
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                -webkit-transform: scale(var(--fa-beat-fade-scale, 1.125));
+                transform: scale(var(--fa-beat-fade-scale, 1.125));
+            }
+        }
+
+        @keyframes fa-beat-fade {
+
+            0%,
+            100% {
+                opacity: var(--fa-beat-fade-opacity, 0.4);
+                -webkit-transform: scale(1);
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                -webkit-transform: scale(var(--fa-beat-fade-scale, 1.125));
+                transform: scale(var(--fa-beat-fade-scale, 1.125));
+            }
+        }
+
+        @-webkit-keyframes fa-flip {
+            50% {
+                -webkit-transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+                transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+            }
+        }
+
+        @keyframes fa-flip {
+            50% {
+                -webkit-transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+                transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+            }
+        }
+
+        @-webkit-keyframes fa-shake {
+            0% {
+                -webkit-transform: rotate(-15deg);
+                transform: rotate(-15deg);
+            }
+
+            4% {
+                -webkit-transform: rotate(15deg);
+                transform: rotate(15deg);
+            }
+
+            8%,
+            24% {
+                -webkit-transform: rotate(-18deg);
+                transform: rotate(-18deg);
+            }
+
+            12%,
+            28% {
+                -webkit-transform: rotate(18deg);
+                transform: rotate(18deg);
+            }
+
+            16% {
+                -webkit-transform: rotate(-22deg);
+                transform: rotate(-22deg);
+            }
+
+            20% {
+                -webkit-transform: rotate(22deg);
+                transform: rotate(22deg);
+            }
+
+            32% {
+                -webkit-transform: rotate(-12deg);
+                transform: rotate(-12deg);
+            }
+
+            36% {
+                -webkit-transform: rotate(12deg);
+                transform: rotate(12deg);
+            }
+
+            40%,
+            100% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+        }
+
+        @keyframes fa-shake {
+            0% {
+                -webkit-transform: rotate(-15deg);
+                transform: rotate(-15deg);
+            }
+
+            4% {
+                -webkit-transform: rotate(15deg);
+                transform: rotate(15deg);
+            }
+
+            8%,
+            24% {
+                -webkit-transform: rotate(-18deg);
+                transform: rotate(-18deg);
+            }
+
+            12%,
+            28% {
+                -webkit-transform: rotate(18deg);
+                transform: rotate(18deg);
+            }
+
+            16% {
+                -webkit-transform: rotate(-22deg);
+                transform: rotate(-22deg);
+            }
+
+            20% {
+                -webkit-transform: rotate(22deg);
+                transform: rotate(22deg);
+            }
+
+            32% {
+                -webkit-transform: rotate(-12deg);
+                transform: rotate(-12deg);
+            }
+
+            36% {
+                -webkit-transform: rotate(12deg);
+                transform: rotate(12deg);
+            }
+
+            40%,
+            100% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+        }
+
+        @-webkit-keyframes fa-spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fa-spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        .fa-rotate-90 {
+            -webkit-transform: rotate(90deg);
+            transform: rotate(90deg);
+        }
+
+        .fa-rotate-180 {
+            -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+        .fa-rotate-270 {
+            -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+        }
+
+        .fa-flip-horizontal {
+            -webkit-transform: scale(-1, 1);
+            transform: scale(-1, 1);
+        }
+
+        .fa-flip-vertical {
+            -webkit-transform: scale(1, -1);
+            transform: scale(1, -1);
+        }
+
+        .fa-flip-both,
+        .fa-flip-horizontal.fa-flip-vertical {
+            -webkit-transform: scale(-1, -1);
+            transform: scale(-1, -1);
+        }
+
+        .fa-rotate-by {
+            -webkit-transform: rotate(var(--fa-rotate-angle, none));
+            transform: rotate(var(--fa-rotate-angle, none));
+        }
+
+        .fa-stack {
+            display: inline-block;
+            vertical-align: middle;
+            height: 2em;
+            position: relative;
+            width: 2.5em;
+        }
+
+        .fa-stack-1x,
+        .fa-stack-2x {
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: var(--fa-stack-z-index, auto);
+        }
+
+        .svg-inline--fa.fa-stack-1x {
+            height: 1em;
+            width: 1.25em;
+        }
+
+        .svg-inline--fa.fa-stack-2x {
+            height: 2em;
+            width: 2.5em;
+        }
+
+        .fa-inverse {
+            color: var(--fa-inverse, #fff);
+        }
+
+        .sr-only,
+        .fa-sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        .sr-only-focusable:not(:focus),
+        .fa-sr-only-focusable:not(:focus) {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        .svg-inline--fa .fa-primary {
+            fill: var(--fa-primary-color, currentColor);
+            opacity: var(--fa-primary-opacity, 1);
+        }
+
+        .svg-inline--fa .fa-secondary {
+            fill: var(--fa-secondary-color, currentColor);
+            opacity: var(--fa-secondary-opacity, 0.4);
+        }
+
+        .svg-inline--fa.fa-swap-opacity .fa-primary {
+            opacity: var(--fa-secondary-opacity, 0.4);
+        }
+
+        .svg-inline--fa.fa-swap-opacity .fa-secondary {
+            opacity: var(--fa-primary-opacity, 1);
+        }
+
+        .svg-inline--fa mask .fa-primary,
+        .svg-inline--fa mask .fa-secondary {
+            fill: black;
+        }
+
+        .fad.fa-inverse,
+        .fa-duotone.fa-inverse {
+            color: var(--fa-inverse, #fff);
+        }
+    </style>
+    <script>
+        var SSR = true;
+        var ServerState = "eyJ0b2tlbiI6eyJhY2Nlc3NUb2tlbiI6IjVmMDkyMjM5MDI2YWRiZDQ0NTFkZDY5MTg0MmEwYTBjOWE2Yzc3M2ViNzY2MjliOWEwYTczNGM1MGU2OTQ2MzciLCJ1c2VySWQiOiI2MDE3ZTFkNi0wMDg2LTRkNWUtYmQ3Ny01MWFjMTE5YTU5NTcifSwidXNlciI6eyJpZCI6IjYwMTdlMWQ2LTAwODYtNGQ1ZS1iZDc3LTUxYWMxMTlhNTk1NyIsImVtYWlsIjoicHN5a29mb3VAaG90bWFpbC5jb20iLCJ1c2VybmFtZSI6ImFkbWluIiwic2V0dGluZ3MiOnt9fX0=";
+    </script>
+</head>
+
+<body>
+    <div class="pizi-menu-app">
+        <div class="pizi-menubar">
+            <div class="pizi-menubar__bar border-alt-light fill medium main"><a
+                    class="pizi-menubar__bar__logo simple secondary" href="/"><img src="/icon.png" /></a>
+                <div class="pizi-menubar__bar__user secondary"><svg aria-hidden="true" focusable="false"
+                        data-prefix="fas" data-icon="user" class="svg-inline--fa fa-user " role="img"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path fill="currentColor"
+                            d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z">
+                        </path>
+                    </svg>
+                    <div><label>user</label><span>admin</span></div>
+                </div>
+                <div class="pizi-button-group fill medium main"><button
+                        class="pizi-button menu-button simple large secondary icon right menu-button" type="button"><svg
+                            aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bars"
+                            class="svg-inline--fa fa-bars " role="img" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 448 512">
+                            <path fill="currentColor"
+                                d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z">
+                            </path>
+                        </svg></button></div>
+            </div>
+            <div class="pizi-menubar__container animate__animated fill fill medium main">
+                <nav class="pizi-menubar__container__items"><a class="pizi-menu-item simple medium secondary"
+                        href="/"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="house"
+                            class="svg-inline--fa fa-house " role="img" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 576 512">
+                            <path fill="currentColor"
+                                d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z">
+                            </path>
+                        </svg><label>Home</label></a><a class="pizi-menu-item simple medium secondary"
+                        href="/account"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user"
+                            class="svg-inline--fa fa-user " role="img" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 448 512">
+                            <path fill="currentColor"
+                                d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z">
+                            </path>
+                        </svg><label>Account</label></a><a aria-current="page"
+                        class="pizi-menu-item simple medium secondary active" href="/rest"><svg aria-hidden="true"
+                            focusable="false" data-prefix="fas" data-icon="plug" class="svg-inline--fa fa-plug "
+                            role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                            <path fill="currentColor"
+                                d="M96 0C78.3 0 64 14.3 64 32v96h64V32c0-17.7-14.3-32-32-32zM288 0c-17.7 0-32 14.3-32 32v96h64V32c0-17.7-14.3-32-32-32zM32 160c-17.7 0-32 14.3-32 32s14.3 32 32 32v32c0 77.4 55 142 128 156.8V480c0 17.7 14.3 32 32 32s32-14.3 32-32V412.8C297 398 352 333.4 352 256V224c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z">
+                            </path>
+                        </svg><label>Rest UI</label></a></nav>
+            </div>
+        </div>
+        <div class="pizi-menu-app-container">
+            <div class="pizi-container rest">
+                <h2 class="pizi-heading simple medium main">REST API</h2>
+                <div class="collections">
+                    <h3 class="pizi-heading simple medium teritary">Collections: <div
+                            class="pizi-input pizi-select-input"><label></label>
+                            <div class="pizi-select-input__input"><select size="1">
+                                    <option class="animate__animated animate__fadeIn animate__faster"
+                                        style="animation-delay:0s" value=""></option>
+                                    <option class="animate__animated animate__fadeIn animate__faster"
+                                        style="animation-delay:0.05s" value="users" selected="">users</option>
+                                    <option class="animate__animated animate__fadeIn animate__faster"
+                                        style="animation-delay:0.1s" value="roles">roles</option>
+                                    <option class="animate__animated animate__fadeIn animate__faster"
+                                        style="animation-delay:0.15000000000000002s" value="oauthTokens">oauthTokens
+                                    </option>
+                                    <option class="animate__animated animate__fadeIn animate__faster"
+                                        style="animation-delay:0.2s" value="oauthClients">oauthClients</option>
+                                    <option class="animate__animated animate__fadeIn animate__faster"
+                                        style="animation-delay:0.25s" value="oauthAuthorizationCodes">
+                                        oauthAuthorizationCodes</option>
+                                </select><svg aria-hidden="true" focusable="false" data-prefix="fas"
+                                    data-icon="chevron-down" class="svg-inline--fa fa-chevron-down caret main"
+                                    role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path fill="currentColor"
+                                        d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+                                    </path>
+                                </svg></div>
+                            <div class="pizi-input__error error"></div>
+                        </div>
+                    </h3>
+                </div>
+                <div class="pizi-container rest-ui-detail"><input id=":R14m:" type="hidden" />
+                    <div class="pizi-button-group simple medium main"><label
+                            class="total"><span></span>documents</label><button
+                            class="pizi-button selected simple medium main icon right selected" type="button"><svg
+                                aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus"
+                                class="svg-inline--fa fa-plus " role="img" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 448 512">
+                                <path fill="currentColor"
+                                    d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z">
+                                </path>
+                            </svg></button><button class="pizi-button selected simple medium main icon right selected"
+                            type="button"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="table"
+                                class="svg-inline--fa fa-table " role="img" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 512 512">
+                                <path fill="currentColor"
+                                    d="M64 256V160H224v96H64zm0 64H224v96H64V320zm224 96V320H448v96H288zM448 256H288V160H448v96zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z">
+                                </path>
+                            </svg></button><button class="pizi-button simple medium main icon" type="button"><svg
+                                aria-hidden="true" focusable="false" data-prefix="fas" data-icon="code"
+                                class="svg-inline--fa fa-code " role="img" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 640 512">
+                                <path fill="currentColor"
+                                    d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3L562.7 256l-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z">
+                                </path>
+                            </svg></button></div>
+                    <div class="pizi-container detail"><!--$?--><template id="B:0"></template>
+                        <div class="pizi-spinner medium main"><svg aria-hidden="true" focusable="false"
+                                data-prefix="fas" data-icon="circle-notch" class="svg-inline--fa fa-circle-notch "
+                                role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path fill="currentColor"
+                                    d="M222.7 32.1c5 16.9-4.6 34.8-21.5 39.8C121.8 95.6 64 169.1 64 256c0 106 86 192 192 192s192-86 192-192c0-86.9-57.8-160.4-137.1-184.1c-16.9-5-26.6-22.9-21.5-39.8s22.9-26.6 39.8-21.5C434.9 42.1 512 140 512 256c0 141.4-114.6 256-256 256S0 397.4 0 256C0 140 77.1 42.1 182.9 10.6c16.9-5 34.8 4.6 39.8 21.5z">
+                                </path>
+                            </svg></div><!--/$-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>Pizi Server 2024</footer>
+    <div hidden id="S:0">
+        <div class="pizi-table animate__animated animate__fadeIn">
+            <div class="pizi-table-container static-header">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="pizi-head border secondary"><button
+                                    class="pizi-button head-cell no-active simple medium main head-cell no-active"
+                                    type="button">id<svg aria-hidden="true" focusable="false" data-prefix="fas"
+                                        data-icon="arrow-up-wide-short"
+                                        class="svg-inline--fa fa-arrow-up-wide-short right" role="img"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                        <path fill="currentColor"
+                                            d="M151.6 42.4C145.5 35.8 137 32 128 32s-17.5 3.8-23.6 10.4l-88 96c-11.9 13-11.1 33.3 2 45.2s33.3 11.1 45.2-2L96 146.3V448c0 17.7 14.3 32 32 32s32-14.3 32-32V146.3l32.4 35.4c11.9 13 32.2 13.9 45.2 2s13.9-32.2 2-45.2l-88-96zM320 480h32c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32z">
+                                        </path>
+                                    </svg></button></th>
+                            <th class="pizi-head border secondary"><button
+                                    class="pizi-button head-cell no-active simple medium main head-cell no-active"
+                                    type="button">email<svg aria-hidden="true" focusable="false" data-prefix="fas"
+                                        data-icon="arrow-up-wide-short"
+                                        class="svg-inline--fa fa-arrow-up-wide-short right" role="img"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                        <path fill="currentColor"
+                                            d="M151.6 42.4C145.5 35.8 137 32 128 32s-17.5 3.8-23.6 10.4l-88 96c-11.9 13-11.1 33.3 2 45.2s33.3 11.1 45.2-2L96 146.3V448c0 17.7 14.3 32 32 32s32-14.3 32-32V146.3l32.4 35.4c11.9 13 32.2 13.9 45.2 2s13.9-32.2 2-45.2l-88-96zM320 480h32c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32z">
+                                        </path>
+                                    </svg></button></th>
+                            <th class="pizi-head border secondary"><button
+                                    class="pizi-button head-cell no-active simple medium main head-cell no-active"
+                                    type="button">username<svg aria-hidden="true" focusable="false" data-prefix="fas"
+                                        data-icon="arrow-up-wide-short"
+                                        class="svg-inline--fa fa-arrow-up-wide-short right" role="img"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                        <path fill="currentColor"
+                                            d="M151.6 42.4C145.5 35.8 137 32 128 32s-17.5 3.8-23.6 10.4l-88 96c-11.9 13-11.1 33.3 2 45.2s33.3 11.1 45.2-2L96 146.3V448c0 17.7 14.3 32 32 32s32-14.3 32-32V146.3l32.4 35.4c11.9 13 32.2 13.9 45.2 2s13.9-32.2 2-45.2l-88-96zM320 480h32c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32z">
+                                        </path>
+                                    </svg></button></th>
+                            <th class="pizi-head border secondary"><button
+                                    class="pizi-button head-cell no-active simple medium main head-cell no-active"
+                                    type="button">settings<svg aria-hidden="true" focusable="false" data-prefix="fas"
+                                        data-icon="arrow-up-wide-short"
+                                        class="svg-inline--fa fa-arrow-up-wide-short right" role="img"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                        <path fill="currentColor"
+                                            d="M151.6 42.4C145.5 35.8 137 32 128 32s-17.5 3.8-23.6 10.4l-88 96c-11.9 13-11.1 33.3 2 45.2s33.3 11.1 45.2-2L96 146.3V448c0 17.7 14.3 32 32 32s32-14.3 32-32V146.3l32.4 35.4c11.9 13 32.2 13.9 45.2 2s13.9-32.2 2-45.2l-88-96zM320 480h32c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32z">
+                                        </path>
+                                    </svg></button></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="">
+                            <td>
+                                <div class="pizi-json"><span
+                                        class="json-string uuid">6017e1d6-0086-4d5e-bd77-51ac119a5957</span></div>
+                            </td>
+                            <td>
+                                <div class="pizi-json"><span class="json-string email"><a class="pizi-link"
+                                            href="mailto:psykofou@hotmail.com">psykofou@hotmail.com</a></span></div>
+                            </td>
+                            <td>
+                                <div class="pizi-json"><span class="json-string">admin</span></div>
+                            </td>
+                            <td>
+                                <div class="pizi-json">
+                                    <div class="json-object"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="">
+                            <td>
+                                <div class="pizi-json"><span
+                                        class="json-string uuid">af0c3238-8676-433a-a46b-b12bedce8615</span></div>
+                            </td>
+                            <td>
+                                <div class="pizi-json"><span class="json-string email"><a class="pizi-link"
+                                            href="mailto:test@test.ca">test@test.ca</a></span></div>
+                            </td>
+                            <td>
+                                <div class="pizi-json"><span class="json-string">test</span></div>
+                            </td>
+                            <td>
+                                <div class="pizi-json">
+                                    <div class="json-object"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="">
+                            <td>
+                                <div class="pizi-json"><span
+                                        class="json-string uuid">ce442ac3-e6da-4653-a25a-4573f8737036</span></div>
+                            </td>
+                            <td>
+                                <div class="pizi-json"><span class="json-string email"><a class="pizi-link"
+                                            href="mailto:tedst@test.tet">tedst@test.tet</a></span></div>
+                            </td>
+                            <td>
+                                <div class="pizi-json"><span class="json-string">superAdmin2</span></div>
+                            </td>
+                            <td>
+                                <div class="pizi-json">
+                                    <div class="json-object"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>$RC = function (b, c, e) { c = document.getElementById(c); c.parentNode.removeChild(c); var a = document.getElementById(b); if (a) { b = a.previousSibling; if (e) b.data = "$!", a.setAttribute("data-dgst", e); else { e = b.parentNode; a = b.nextSibling; var f = 0; do { if (a && 8 === a.nodeType) { var d = a.data; if ("/$" === d) if (0 === f) break; else f--; else "$" !== d && "$?" !== d && "$!" !== d || f++ } d = a.nextSibling; e.removeChild(a); a = d } while (a); for (; c.firstChild;)e.insertBefore(c.firstChild, a); b.data = "$" } b._reactRetry && b._reactRetry() } }; $RC("B:0", "S:0")</script>
+</body>
+
+</html>

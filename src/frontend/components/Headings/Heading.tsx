@@ -1,5 +1,5 @@
 import { Heading } from 'pizi-react'
-import { HeadingProps } from 'pizi-react/src/components/Typography/Heading/Heading'
+import { HeadingProps } from 'pizi-react/src/components/Typography/Heading/Heading.js'
 import React from 'react'
 
 export const H = ({...props}: HeadingProps) => {

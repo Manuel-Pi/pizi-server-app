@@ -4,6 +4,17 @@
     .login-box{
         margin-left: auto;
         margin-right: auto;
+        padding-bottom: 3em;
+        animation: fadeIn;
+        animation-duration: 2s;
+
+        >*{
+            each(range(0.4, 2, 0.1), {
+                &:nth-child(@{index}){
+                    animation-delay: unit(@value, s);
+                }
+            });
+        }
     }
 
     .pizi-switch, .password{
